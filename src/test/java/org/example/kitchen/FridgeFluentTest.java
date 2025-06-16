@@ -20,4 +20,34 @@ public class FridgeFluentTest {
 
     private final TestableFridge fridge = new TestableFridge();
 
+    @Nested
+    class PutTests {
+
+    }
+
+    @Nested
+    class GetAllTests {
+
+    }
+
+    @Nested
+    class GetSomeTests {
+
+    }
+
+    @Nested
+    class ListFoodTests {
+
+    }
+
+    @Nested
+    class GetEmptySpaceTests {
+
+    }
+
+    @Nested
+    class EmptyTests {
+
+    }
+
 }
