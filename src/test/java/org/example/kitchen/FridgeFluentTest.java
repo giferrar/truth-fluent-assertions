@@ -15,6 +15,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.example.kitchen.Fridge.MAX_SPACE;
 import static org.example.kitchen.utils.FoodSubject.assertThatFood;
 import static org.example.kitchen.utils.TestableFridge.*;
+import static org.example.kitchen.utils.TestableFridgeSubject.assertThatFridge;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FridgeFluentTest {
@@ -129,7 +130,7 @@ public class FridgeFluentTest {
             assertThatFood(optionalApples.get())
                     .hasName(AN_APPLE.name)
                     .hasQuantity(AN_APPLE.quantity);
-            assertThat(fridge.getEmptySpace()).isEqualTo(MAX_SPACE);
+            assertThatFridge(fridge).isEmpty();
         }
 
         @Test
@@ -203,8 +204,7 @@ public class FridgeFluentTest {
             assertThatFood(food)
                     .hasName(AN_APPLE.name)
                     .hasQuantity(AN_APPLE.quantity);
-            assertThat(fridge.getEmptySpace()).isEqualTo(MAX_SPACE);
-            assertThat(fridge.listFood()).isEmpty();
+            assertThatFridge(fridge).isEmpty();
         }
 
         @Test
@@ -313,8 +313,7 @@ public class FridgeFluentTest {
             fridge.empty();
 
             // Then
-            assertThat(fridge.getEmptySpace()).isEqualTo(MAX_SPACE);
-            assertThat(fridge.listFood()).isEmpty();
+            assertThatFridge(fridge).isEmpty();
         }
 
         @Test
@@ -326,8 +325,7 @@ public class FridgeFluentTest {
             fridge.empty();
 
             // Then
-            assertThat(fridge.getEmptySpace()).isEqualTo(MAX_SPACE);
-            assertThat(fridge.listFood()).isEmpty();
+            assertThatFridge(fridge).isEmpty();
         }
     }
 
