@@ -19,7 +19,7 @@ public class Fridge implements IFridge {
 
     @Override
     public void put(Food food) throws FridgeFullException {
-        if (emptySpace <= food.quantity) { // Here is a bug! We found it thanks to an edge case test!
+        if (emptySpace < food.quantity) {
             throw new FridgeFullException("Not enough space left in fridge");
         }
         content.stream()
