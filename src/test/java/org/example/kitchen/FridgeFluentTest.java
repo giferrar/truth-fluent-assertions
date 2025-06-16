@@ -27,7 +27,45 @@ public class FridgeFluentTest {
 
     @Nested
     class GetAllTests {
+        @Test
+        public void given_empty_fridge_when_get_all_apples_then_empty_optional_is_returned() {
+            // Given
+            fridge.with();
 
+            // When
+            Optional<Food> optionalApples = fridge.getAll(AN_APPLE.name);
+
+            // Then
+            assertThat(optionalApples).isEmpty();
+        }
+
+        @Test
+        public void given_fridge_with_one_apple_when_get_all_apples_then_one_apple_is_returned_and_fridge_is_empty() {
+            // Given
+            fridge.with(AN_APPLE);
+
+            // When
+            Optional<Food> optionalApples = fridge.getAll(AN_APPLE.name);
+
+            // Then
+            assertThat(optionalApples).isPresent();
+            assertThat(optionalApples).hasValue(AN_APPLE);
+            assertThat(fridge.getEmptySpace()).isEqualTo(MAX_SPACE);
+        }
+
+        @Test
+        public void given_fridge_with_apples_and_bananas_when_get_all_apples_then_apples_are_returned_and_fridge_contains_bananas() {
+            // Given
+            fridge.with(TEN_APPLES, TEN_BANANAS);
+
+            // When
+            Optional<Food> optionalApples = fridge.getAll(TEN_APPLES.name);
+
+            // Then
+            assertThat(optionalApples).isPresent();
+            assertThat(optionalApples).hasValue(TEN_APPLES);
+            assertThat(fridge.listFood()).containsExactly(TEN_BANANAS.name);
+        }
     }
 
     @Nested
