@@ -13,6 +13,7 @@ import java.util.Optional;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.example.kitchen.Fridge.MAX_SPACE;
+import static org.example.kitchen.utils.FoodSubject.assertThatFood;
 import static org.example.kitchen.utils.TestableFridge.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -125,7 +126,9 @@ public class FridgeFluentTest {
 
             // Then
             assertThat(optionalApples).isPresent();
-            assertThat(optionalApples).hasValue(AN_APPLE);
+            assertThatFood(optionalApples.get())
+                    .hasName(AN_APPLE.name)
+                    .hasQuantity(AN_APPLE.quantity);
             assertThat(fridge.getEmptySpace()).isEqualTo(MAX_SPACE);
         }
 
@@ -139,7 +142,9 @@ public class FridgeFluentTest {
 
             // Then
             assertThat(optionalApples).isPresent();
-            assertThat(optionalApples).hasValue(TEN_APPLES);
+            assertThatFood(optionalApples.get())
+                    .hasName(TEN_APPLES.name)
+                    .hasQuantity(TEN_APPLES.quantity);
             assertThat(fridge.listFood()).containsExactly(TEN_BANANAS.name);
         }
     }
@@ -195,7 +200,9 @@ public class FridgeFluentTest {
             Food food = fridge.getSome(AN_APPLE.name, AN_APPLE.quantity);
 
             // Then
-            assertThat(food).isEqualTo(AN_APPLE);
+            assertThatFood(food)
+                    .hasName(AN_APPLE.name)
+                    .hasQuantity(AN_APPLE.quantity);
             assertThat(fridge.getEmptySpace()).isEqualTo(MAX_SPACE);
             assertThat(fridge.listFood()).isEmpty();
         }
@@ -209,7 +216,9 @@ public class FridgeFluentTest {
             Food food = fridge.getSome(AN_APPLE.name, AN_APPLE.quantity);
 
             // Then
-            assertThat(food).isEqualTo(AN_APPLE);
+            assertThatFood(food)
+                    .hasName(AN_APPLE.name)
+                    .hasQuantity(AN_APPLE.quantity);
             assertThat(fridge.getEmptySpace()).isEqualTo(MAX_SPACE - TEN_APPLES.quantity + AN_APPLE.quantity);
             assertThat(fridge.listFood()).isNotEmpty();
         }
