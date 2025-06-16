@@ -70,7 +70,73 @@ public class FridgeFluentTest {
 
     @Nested
     class GetSomeTests {
+        @Test
+        public void given_empty_fridge_when_get_an_apple_then_not_enough_food_exception_is_thrown() {
+            // Given
+            fridge.with();
 
+            // When
+            Executable executable = () -> fridge.getSome(AN_APPLE.name, AN_APPLE.quantity);
+
+            // Then
+            NotEnoughFoodException exception = assertThrows(NotEnoughFoodException.class, executable);
+            assertThat(exception).hasMessageThat().contains("Not enough " + AN_APPLE.name + " in fridge");
+        }
+
+        @Test
+        public void given_fridge_with_an_apple_when_get_ten_apples_then_not_enough_food_exception_is_thrown() {
+            // Given
+            fridge.with(AN_APPLE);
+
+            // When
+            Executable executable = () -> fridge.getSome(TEN_APPLES.name, TEN_APPLES.quantity);
+
+            // Then
+            NotEnoughFoodException exception = assertThrows(NotEnoughFoodException.class, executable);
+            assertThat(exception).hasMessageThat().contains("Not enough " + TEN_APPLES.name + " in fridge");
+        }
+
+        @Test
+        public void given_fridge_with_a_banana_when_get_an_apple_then_not_enough_food_exception_is_thrown() {
+            // Given
+            fridge.with(A_BANANA);
+
+            // When
+            Executable executable = () -> fridge.getSome(AN_APPLE.name, AN_APPLE.quantity);
+
+            // Then
+            NotEnoughFoodException exception = assertThrows(NotEnoughFoodException.class, executable);
+            assertThat(exception).hasMessageThat().contains("Not enough " + AN_APPLE.name + " in fridge");
+            assertThat(fridge.listFood()).containsExactly(A_BANANA.name);
+        }
+
+        @Test
+        public void given_fridge_with_an_apple_when_get_one_apple_then_apple_is_returned_and_fridge_is_empty() {
+            // Given
+            fridge.with(AN_APPLE);
+
+            // When
+            Food food = fridge.getSome(AN_APPLE.name, AN_APPLE.quantity);
+
+            // Then
+            assertThat(food).isEqualTo(AN_APPLE);
+            assertThat(fridge.getEmptySpace()).isEqualTo(MAX_SPACE);
+            assertThat(fridge.listFood()).isEmpty();
+        }
+
+        @Test
+        public void given_fridge_with_ten_apples_when_get_one_apple_then_apple_is_returned_and_fridge_is_not_empty() {
+            // Given
+            fridge.with(TEN_APPLES);
+
+            // When
+            Food food = fridge.getSome(AN_APPLE.name, AN_APPLE.quantity);
+
+            // Then
+            assertThat(food).isEqualTo(AN_APPLE);
+            assertThat(fridge.getEmptySpace()).isEqualTo(MAX_SPACE - TEN_APPLES.quantity + AN_APPLE.quantity);
+            assertThat(fridge.listFood()).isNotEmpty();
+        }
     }
 
     @Nested
