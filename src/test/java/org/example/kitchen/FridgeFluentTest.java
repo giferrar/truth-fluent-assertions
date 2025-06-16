@@ -42,7 +42,41 @@ public class FridgeFluentTest {
 
     @Nested
     class GetEmptySpaceTests {
+        @Test
+        public void given_empty_fridge_when_get_empty_space_then_empty_space_is_100() {
+            // Given
+            fridge.with();
 
+            // When
+            int emptySpace = fridge.getEmptySpace();
+
+            // Then
+            assertThat(emptySpace).isEqualTo(MAX_SPACE);
+        }
+
+        @Test
+        public void given_fridge_with_an_apple_when_get_empty_space_then_empty_space_is_99() {
+            // Given
+            fridge.with(AN_APPLE);
+
+            // When
+            int emptySpace = fridge.getEmptySpace();
+
+            // Then
+            assertThat(emptySpace).isEqualTo(MAX_SPACE - AN_APPLE.quantity);
+        }
+
+        @Test
+        public void given_fridge_with_hundred_apples_when_get_empty_space_then_empty_space_is_0() {
+            // Given
+            fridge.with(HUNDRED_APPLES);
+
+            // When
+            int emptySpace = fridge.getEmptySpace();
+
+            // Then
+            assertThat(emptySpace).isEqualTo(MAX_SPACE - HUNDRED_APPLES.quantity);
+        }
     }
 
     @Nested
