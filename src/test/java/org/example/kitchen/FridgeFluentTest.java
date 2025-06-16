@@ -22,7 +22,83 @@ public class FridgeFluentTest {
 
     @Nested
     class PutTests {
+        @Test
+        public void given_empty_fridge_when_put_an_apple_then_apple_is_in_fridge() {
+            // Given
+            fridge.with();
 
+            // When
+            fridge.put(AN_APPLE);
+
+            // Then
+            assertThat(fridge.getEmptySpace()).isEqualTo(MAX_SPACE - AN_APPLE.quantity);
+            assertThat(fridge.listFood()).containsExactly(AN_APPLE.name);
+        }
+
+        @Test
+        public void given_fridge_with_an_apple_when_put_an_apple_then_two_apples_are_in_fridge() {
+            // Given
+            fridge.with(AN_APPLE);
+
+            // When
+            fridge.put(AN_APPLE);
+
+            // Then
+            assertThat(fridge.getEmptySpace()).isEqualTo(MAX_SPACE - AN_APPLE.quantity - AN_APPLE.quantity);
+            assertThat(fridge.listFood()).containsExactly(AN_APPLE.name);
+        }
+
+        @Test
+        public void given_fridge_with_a_banana_when_put_an_apple_then_banana_and_apple_are_in_fridge() {
+            // Given
+            fridge.with(A_BANANA);
+
+            // When
+            fridge.put(AN_APPLE);
+
+            // Then
+            assertThat(fridge.getEmptySpace()).isEqualTo(MAX_SPACE - A_BANANA.quantity - AN_APPLE.quantity);
+            assertThat(fridge.listFood()).containsExactly(A_BANANA.name, AN_APPLE.name);
+        }
+
+        @Test
+        public void given_empty_fridge_when_put_hundred_apples_then_fridge_is_full() {
+            // Given
+            fridge.with();
+
+            // When
+            fridge.put(HUNDRED_APPLES);
+
+            // Then
+            assertThat(fridge.getEmptySpace()).isEqualTo(MAX_SPACE - HUNDRED_APPLES.quantity);
+            assertThat(fridge.listFood()).containsExactly(HUNDRED_APPLES.name);
+        }
+
+        @Test
+        public void given_empty_fridge_when_put_too_much_food_then_fridge_full_exception_is_thrown() {
+            // Given
+            fridge.with();
+
+            // When
+            Executable executable = () -> fridge.put(TOO_MUCH_FOOD);
+
+            // Then
+            FridgeFullException exception = assertThrows(FridgeFullException.class, executable);
+            assertThat(exception).hasMessageThat().contains("Not enough space left in fridge");
+        }
+
+        @Test
+        public void given_fridge_full_when_put_one_apple_then_fridge_full_exception_is_thrown() {
+            // Given
+            fridge.with(HUNDRED_APPLES);
+
+            // When
+            Executable executable = () -> fridge.put(AN_APPLE);
+
+            // Then
+            FridgeFullException exception = assertThrows(FridgeFullException.class, executable);
+            assertThat(exception).hasMessageThat().contains("Not enough space left in fridge");
+        }
     }
 
     @Nested
